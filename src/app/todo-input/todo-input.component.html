@@ -1,0 +1,14 @@
+<div class="row input-form">
+    <div class="col-md-10">
+      <input type="text" class="form-control" 
+      [class.border-red]="isError"
+      [(ngModel)]="inputValue" (keydown.enter)="addTodo()" 
+      placeholder="what do you need to do today ?">
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-success px-4" type="button" (click)="addTodo()">Add</button>
+    </div>
+    <div [class]="isError ? 'visible' : 'invisible' " class="error-message col-md-12 text-danger">
+      <i>error message here !</i>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+<div class="todo-list row">
+    <div class="row col-md-12 header">
+      <h4 class="header-title col-md-10">Title</h4>
+      <h4 class="header-action col-md-2 text-center "> Action</h4>
+    </div>
+
+    <ng-container *ngFor="let item of todoList">
+      <div class="todo-item row">
+        <div class="todo-container row col-md-9">
+          <p class="todo-title" *ngIf="!item.isEdit" [class]="item.isDone ? 'line-through' : ''">{{item.title}}</p>
+          <div class="col-md-9" *ngIf="item.isEdit">
+            <input type="text" class="form-control"  [(ngModel)]="item.title">
+          </div>
+          <div class="col-md-3" *ngIf="item.isEdit">
+            <input type="checkbox" class="form-check-input" [(ngModel)]="item.isDone">
+            Completed
+          </div>
+        </div>
+        <div class="action-container col-md-3">
+          <div class="" *ngIf="!item.isEdit">
+            <button class="btn btn-primary" type="button" (click)=editTodo(item)>Edit</button>
+            <button class="btn btn-danger" type="button" (click)="deleteTodo(item)">Delete</button>
+          </div>
+          <div class="" *ngIf="item.isEdit">
+            <button class="btn btn-success" type="button" (click)="saveEdit(item)">Save</button>
+            <button class="btn btn-warning" type="button" (click)="cancelEdit(item)">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    
+
+</div>

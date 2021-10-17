@@ -1,0 +1,23 @@
+.header {
+    background-color: #cbcbcb;
+}
+.todo-item {
+    border-bottom: 1px rgb(102, 100, 100) solid;
+    padding: 0 !important;
+}
+.todo-title {
+    font-size: 1.3rem;
+}
+
+.line-through {
+    text-decoration: line-through;
+}
+.action-container{
+    display: flex !important;
+    padding: 0 !important;
+    justify-content: center !important;
+}
+.btn{
+    display: inline-block;
+    margin: 0 10px !important;
+}

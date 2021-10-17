@@ -1,0 +1,6 @@
+<div class="wrapper container mt-5">
+  <h2 class="heading text-center text-danger">TODO LIST</h2>
+
+  <app-todo-input (clickAddBtn)="pushTodo($event)"></app-todo-input>
+  <app-todo-table [todoList]="todoList"></app-todo-table>
+</div>
