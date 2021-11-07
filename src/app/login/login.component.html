@@ -1,0 +1,150 @@
+<!-- login form -->
+<div *ngIf="loginStatus"
+    class="login col-md-4 card bg-light m-3">
+    <h3 class="text-center text-secondary">Login</h3>
+    <form (ngSubmit)="submitLogin()" [formGroup]="loginForm" class="ms-2">
+        <div class="form-group">
+            <label class="text-primary">Account:</label>
+            <br>
+            <input type="text" class="form-control"
+                    formControlName="account" name="account"
+                    placeholder="enter your username or email">
+            <div *ngIf="loginForm.controls.account?.touched && loginForm.controls.account?.invalid">
+                <span class="error-message" *ngIf="loginForm.controls.account?.errors?.required">
+                    username or email is required
+                </span>
+                <span class="error-message" *ngIf="loginForm.controls.account?.errors?.accountValid">
+                    username or email does not exist
+                </span>
+                <span class="error-message" *ngIf="loginForm.controls.account?.errors?.minlength">
+                    username or email must be more than 10 characters
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="text-primary">password:</label>
+                <br>
+            <input type="password" class="form-control"
+                    formControlName="password" name="password"
+                    placeholder="enter your password">
+            <div *ngIf="loginForm.controls.password?.touched && loginForm.controls.password?.invalid">
+                <span class="error-message" *ngIf="loginForm.controls.password?.errors?.required">
+                    password is required
+                </span>
+                <span class="error-message" *ngIf="loginForm.controls.password?.errors?.minlength">
+                    password must be 8 - 16 characters
+                </span>
+                <span class="error-message" *ngIf="loginForm.controls.password?.errors?.maxlength">
+                    password must be 8 - 16 characters
+                </span>
+                <span class="error-message" *ngIf="loginForm.controls.password?.errors?.passwordValid">
+                    password incorrect
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-success mt-2">Login</button>
+        </div>
+    </form>
+    <div>
+        <span class="ms-2">if you don't have an account, click here: </span>
+        <button class="btn-sm btn-primary" (click)="changeForm()">Register</button>
+    </div>
+</div>
+
+
+
+<!-- register form -->
+<div *ngIf="!loginStatus" 
+    class="login col-md-4 card bg-light m-3 ">
+    <h3 class="text-center text-secondary">Register</h3>
+    <form (ngSubmit)="submitRegister()" [formGroup]="registerForm" class="ms-2">
+        <div class="form-group">
+            <label class="text-primary">user name:</label>
+            <br>
+            <input type="text" class="form-control"
+                    formControlName="userName" name="userName"
+                    placeholder="enter your username">
+            <div *ngIf="registerForm.controls.userName?.touched && registerForm.controls.userName?.invalid">
+                <span class="error-message" *ngIf="registerForm.controls.userName?.errors?.required">
+                    username is required
+                </span>
+                <span class="error-message" *ngIf="registerForm.controls.userName?.errors?.minlength">
+                    username must be 8 - 16 characters
+                </span>
+                <span class="error-message" *ngIf="registerForm.controls.userName?.errors?.maxlength">
+                    username must be 8 - 16 characters
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="text-primary">email:</label>
+            <br>
+            <input type="text" class="form-control"
+                    formControlName="email" name="email"
+                    placeholder="enter your email: adc@example.com...">
+            <div *ngIf="registerForm.controls.email?.touched && registerForm.controls.email?.invalid">
+                <span class="error-message" *ngIf="registerForm.controls.email?.errors?.required">
+                    username or email is required
+                </span>
+                <span class="error-message" *ngIf="registerForm.controls.email?.errors?.minlength">
+                    username or email must be more than 10 characters
+                </span>
+                <span class="error-message" *ngIf="registerForm.controls.email?.errors?.emailValidator">
+                    email must be followed the format: abc@example.xyz
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="text-primary">password:</label>
+                <br>
+            <input type="password" class="form-control"
+                    formControlName="password" name="password"
+                    placeholder="enter your password">
+            <div *ngIf="registerForm.controls.password?.touched && registerForm.controls.password?.invalid">
+                <span class="error-message" *ngIf="registerForm.controls.password?.errors?.required">
+                    password is required
+                </span>
+                <span class="error-message" *ngIf="registerForm.controls.password?.errors?.minlength">
+                    password must be 8 - 16 characters
+                </span>
+                <span class="error-message" *ngIf="registerForm.controls.password?.errors?.maxlength">
+                    password must be 8 - 16 characters
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="text-primary">confirm password:</label>
+                <br>
+            <input type="password" class="form-control"
+                    formControlName="confirmPassword" name="confirmPassword"
+                    placeholder="enter your password again">
+            <div *ngIf="registerForm.controls.confirmPassword?.touched && registerForm.controls.confirmPassword?.invalid">
+                <span class="error-message" *ngIf="registerForm.controls.confirmPassword?.errors?.required">
+                    password is required
+                </span>
+                <span class="error-message" *ngIf="registerForm.controls.confirmPassword?.errors?.minlength">
+                    password must be 8 - 16 characters
+                </span>
+                <span class="error-message" *ngIf="registerForm.controls.confirmPassword?.errors?.maxlength">
+                    password must be 8 - 16 characters
+                </span>
+                <span class="error-message" *ngIf="registerForm.controls.confirmPassword?.errors?.confirmPasswordValid">
+                    confirm password is not matched
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary mt-2">Register</button>
+        </div>
+        <div *ngIf="isSuccess">
+            <span class="success">
+                Register successfully !
+            </span>
+        </div>
+    </form>
+    <div>
+        <span class="ms-2">click here to login now: </span>
+        <button class="btn-sm btn-success" (click)="changeForm()">login</button>
+    </div>
+</div>

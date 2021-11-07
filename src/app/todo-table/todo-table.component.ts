@@ -1,62 +1,80 @@
 
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, OnChanges} from '@angular/core';
+import { TodoObject } from '../models/models';
+import { TodoService } from '../todo.service';
 
-export interface TodoObject {
-  id: number
-  title: string,
-  isDone: boolean,
-  isEdit: boolean
-}
+
 
 @Component({
   selector: 'app-todo-table',
   templateUrl: './todo-table.component.html',
   styleUrls: ['./todo-table.component.css'],
-
 })
 
-export class TodoTableComponent implements OnInit  {
+export class TodoTableComponent implements OnInit, OnChanges {
 
-  constructor() { }
-  ngOnInit(): void {
-  }
+  constructor(private todoService: TodoService) { }
 
-  @Input() todoList: TodoObject[] = [];
+  @Input() filter: string = ""; 
+  @Input() todos: TodoObject[] = [];
   curTitle: string = '';
-  curStateChecked: boolean = false;
+  curStateChecked: boolean | string = false;
+  todoList: TodoObject[] = [];
+  ngOnInit(): void {
+    this.todoList =[...this.todos];
+    this.filter = '0';
+  }
+  ngOnChanges(): void {
+    this.todoList = this.filter === '0' ? [...this.todos] : [...this.todos.filter(item => item.completed === JSON.parse(this.filter))];  
+    console.log(this.filter);
+    
+  };
+  
 
-  editTodo(item: TodoObject) {
+  editTodo(item: TodoObject){
     item.isEdit = true;
     this.curTitle = item.title;
-    this.curStateChecked = item.isDone;
+    this.curStateChecked = item.completed;
     this.todoList.filter(element => {
       if(element.id !== item.id){
         element.isEdit = false;
-      }
-    } );
+      };
+    });
   };
 
-  saveEdit(item: TodoObject) {
-    if(item.title.length <= 5) {
+  async saveEdit(item: TodoObject) {
+    if(this.todoService.validateTitle(item.title)) {
       alert('todo title must be more than five characters');
-      return
-    }
+      return;
+    };
     item.isEdit = false;
+    await this.todoService.updateTodo(item);
+    if(item.completed && this.filter !== '0'){
+      this.todoList.find((element,index) => {
+        if(element.id === item.id){
+          this.todoList.splice(index,1);
+        };
+      });
+    };
+    
   };
 
   cancelEdit(item: TodoObject) {
     item.title = this.curTitle;
-    item.isDone = this.curStateChecked;
+    item.completed = this.curStateChecked;
     item.isEdit = false;
   };
-  deleteTodo(item: TodoObject){
+
+  async deleteTodo(item: TodoObject){
     const answer = window.confirm('are you sure to delete this todo ?');
     if(answer){
-      this.todoList.find((element,index) => {
+      this.todos.find((element,index) => {
         if(element.id === item.id){
+          this.todos.splice(index,1);
           this.todoList.splice(index,1);
-        }
+        };
       });
+      await this.todoService.deleteTodo(item.id);
     };
   };
 

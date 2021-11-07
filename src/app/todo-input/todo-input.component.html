@@ -2,7 +2,8 @@
     <div class="col-md-10">
       <input type="text" class="form-control" 
       [class.border-red]="isError"
-      [(ngModel)]="inputValue" (keydown.enter)="addTodo()" 
+      #input
+      (keydown.enter)="addTodo()" 
       placeholder="what do you need to do today ?">
     </div>
     <div class="col-md-2">

@@ -1,0 +1,9 @@
+.error-message {
+    color: red;
+}
+.success {
+    color: green;
+}
+.login {
+    margin: 20px auto !important;
+}

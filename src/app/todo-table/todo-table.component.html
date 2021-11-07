@@ -7,12 +7,12 @@
     <ng-container *ngFor="let item of todoList">
       <div class="todo-item row">
         <div class="todo-container row col-md-9">
-          <p class="todo-title" *ngIf="!item.isEdit" [class]="item.isDone ? 'line-through' : ''">{{item.title}}</p>
+          <p class="todo-title" *ngIf="!item.isEdit" [class]="item.completed ? 'line-through' : ''">{{item.title}}</p>
           <div class="col-md-9" *ngIf="item.isEdit">
             <input type="text" class="form-control"  [(ngModel)]="item.title">
           </div>
           <div class="col-md-3" *ngIf="item.isEdit">
-            <input type="checkbox" class="form-check-input" [(ngModel)]="item.isDone">
+            <input type="checkbox" class="form-check-input" [(ngModel)]="item.completed">
             Completed
           </div>
         </div>
@@ -28,6 +28,5 @@
         </div>
       </div>
     </ng-container>
-    
-
+    <ng-content select="[part1]"></ng-content>
 </div>
