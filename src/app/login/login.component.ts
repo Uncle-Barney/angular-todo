@@ -5,6 +5,11 @@ import { LoginValidatorService } from '../login-validator.service';
 import { UsersInfo } from '../models/models';
 import { TodoService } from '../todo.service';
 
+interface City {
+  name: string,
+  code: string
+}
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -90,10 +95,9 @@ export class LoginComponent implements OnInit {
       account.setErrors({accountValid: true});
     };
 
-    const checkToken = await this.todoService.userLogin(account.value,password.value);
+    const checkToken = this.todoService.userLogin(account.value,password.value).subscribe(data => data.token);
     if(this.loginForm.valid && checkToken){
       this.router.navigateByUrl('/todo');
     };
   };
-
 }

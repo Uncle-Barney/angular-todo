@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { TodoObject} from './models/models';
+import { Observable } from 'rxjs';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -8,36 +11,33 @@ import { TodoObject} from './models/models';
 export class TodoService {
 
   constructor(private http: HttpClient) { }
-  async userLogin(username: string, password: string) {
-    const resp = await  this.http.post<any>('https://615dec0412571a00172079a1.mockapi.io/api/v1/login',{username: username, password: password}).toPromise();
-    if(!resp.token){
-      return false;
-    };
-    localStorage.setItem('access-token',resp.token);
-    return true;
+
+   userLogin(username: string, password: string) {
+    const resp = this.http.post<any>('https://615dec0412571a00172079a1.mockapi.io/api/v1/login',{username: username, password: password});
+    return resp;
   };
 
-  async getTodoList(): Promise<TodoObject[]>{
-    return await this.http.get<TodoObject[]>('https://jsonplaceholder.typicode.com/todos').toPromise();
+   getTodoList(): Observable<TodoObject[]>{
+    return this.http.get<TodoObject[]>('https://jsonplaceholder.typicode.com/todos');
   };
 
-  async createTodo(title: string): Promise<TodoObject>{
-    return await this.http.post<TodoObject>('https://jsonplaceholder.typicode.com/todos',{"title": title, "completed": true}).toPromise();
+   createTodo(title: string): Observable<TodoObject>{
+    return this.http.post<TodoObject>('https://jsonplaceholder.typicode.com/todos',{"title": title, "completed": false});
   };
 
   validateTitle(title: string) {
     return title && title.length > 5 ? true : false;
   };
 
-  async updateTodo(todo: TodoObject): Promise<TodoObject> {
-    return await this.http.put<TodoObject>(`https://jsonplaceholder.typicode.com/todos/${todo.id}`,todo).toPromise();
+   updateTodo(todo: TodoObject): Observable<TodoObject> {
+    return this.http.put<TodoObject>(`https://jsonplaceholder.typicode.com/todos/${todo.id}`,todo);
   };
 
-  async deleteTodo(id: number): Promise<TodoObject> {
-    return await this.http.delete<TodoObject>(`https://jsonplaceholder.typicode.com/todos/${id}`).toPromise();
+   deleteTodo(id: number): Observable<TodoObject> {
+    return this.http.delete<TodoObject>(`https://jsonplaceholder.typicode.com/todos/${id}`);
   };
 
-  async getTodoDetail(id: number): Promise<TodoObject> {
-    return await this.http.get<TodoObject>(`https://jsonplaceholder.typicode.com/todos/${id}`).toPromise();
+   getTodoDetail(id: number): Observable<TodoObject> {
+    return this.http.get<TodoObject>(`https://jsonplaceholder.typicode.com/todos/${id}`);
   };
 }

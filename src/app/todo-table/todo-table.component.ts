@@ -18,7 +18,7 @@ export class TodoTableComponent implements OnInit, OnChanges {
   @Input() filter: string = ""; 
   @Input() todos: TodoObject[] = [];
   curTitle: string = '';
-  curStateChecked: boolean | string = false;
+  curCompletedValue: boolean | string = false;
   todoList: TodoObject[] = [];
   ngOnInit(): void {
     this.todoList =[...this.todos];
@@ -34,7 +34,7 @@ export class TodoTableComponent implements OnInit, OnChanges {
   editTodo(item: TodoObject){
     item.isEdit = true;
     this.curTitle = item.title;
-    this.curStateChecked = item.completed;
+    this.curCompletedValue = item.completed;
     this.todoList.filter(element => {
       if(element.id !== item.id){
         element.isEdit = false;
@@ -42,13 +42,13 @@ export class TodoTableComponent implements OnInit, OnChanges {
     });
   };
 
-  async saveEdit(item: TodoObject) {
-    if(this.todoService.validateTitle(item.title)) {
+  saveEdit(item: TodoObject) {
+    if(!this.todoService.validateTitle(item.title)) {
       alert('todo title must be more than five characters');
       return;
     };
     item.isEdit = false;
-    await this.todoService.updateTodo(item);
+    this.todoService.updateTodo(item).subscribe(data => console.log(data));
     if(item.completed && this.filter !== '0'){
       this.todoList.find((element,index) => {
         if(element.id === item.id){
@@ -61,11 +61,11 @@ export class TodoTableComponent implements OnInit, OnChanges {
 
   cancelEdit(item: TodoObject) {
     item.title = this.curTitle;
-    item.completed = this.curStateChecked;
+    item.completed = this.curCompletedValue;
     item.isEdit = false;
   };
 
-  async deleteTodo(item: TodoObject){
+  deleteTodo(item: TodoObject){
     const answer = window.confirm('are you sure to delete this todo ?');
     if(answer){
       this.todos.find((element,index) => {
@@ -74,7 +74,7 @@ export class TodoTableComponent implements OnInit, OnChanges {
           this.todoList.splice(index,1);
         };
       });
-      await this.todoService.deleteTodo(item.id);
+      this.todoService.deleteTodo(item.id);
     };
   };
 

@@ -15,7 +15,9 @@ import { AuthInterceptor } from './shared/interceptor/auth.interceptor';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { AppRoutingModule } from './app-routing.module';
 import { NotfoundComponent } from './notfound/notfound.component';
-import { DetailComponent } from './detail/detail.component';
+import {DropdownModule} from 'primeng/dropdown';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -25,8 +27,8 @@ import { DetailComponent } from './detail/detail.component';
     TodoSortComponent,
     LoginComponent,
     TodoListComponent,
-    NotfoundComponent,
-    DetailComponent,
+    NotfoundComponent
+
   ],
   imports: [
     BrowserModule,
@@ -34,7 +36,9 @@ import { DetailComponent } from './detail/detail.component';
     FontAwesomeModule,
     HttpClientModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    DropdownModule,
+    BrowserAnimationsModule
   ],
   providers: [
     TodoService,
